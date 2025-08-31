@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Mail;
 
 class JobController extends Controller
 {
+    //index() lists all resources 
     public function index()
     {
         $jobs = Job::with('employer')->latest()->simplePaginate(3);
@@ -18,16 +19,19 @@ class JobController extends Controller
         ]);
     }
 
+    //create() shows a form to create a new resource
     public function create()
     {
         return view('jobs.create');
     }
 
+    //show() displays a single resource
     public function show(Job $job)
     {
         return view('jobs.show', ['job' => $job]);
     }
 
+    //store() save a newly created resource
     public function store()
     {
         request()->validate([
@@ -48,11 +52,13 @@ class JobController extends Controller
         return redirect('/jobs');
     }
 
+    //edit() show a form to edit an existing resource
     public function edit(Job $job)
     {
         return view('jobs.edit', ['job' => $job]);
     }
 
+    //update() Save changes to an existing resource
     public function update(Job $job)
     {
         Gate::authorize('edit-job', $job);
@@ -70,6 +76,7 @@ class JobController extends Controller
         return redirect('/jobs/' . $job->id);
     }
 
+    //destroy() delete a resource
     public function destroy(Job $job)
     {
         Gate::authorize('edit-job', $job);
